@@ -109,27 +109,11 @@
     </tbody>
 </table>
 
-<center>
-<form action="{{ route('tabungan.deductAll') }}" method="POST" class="deduct-all-form">
-    @csrf
-    <input type="number" name="jumlah_pengurangan" min="1" required placeholder="Pengurangan">
-    <button type="submit">Kurangi Semua</button>
-</form>
-</center>
 
 <p class="total">Total Tabungan: Rp {{ number_format($totalTabungan, 0, ',', '.') }}</p>
 
 <a class="add-button" href="{{ route('tabungan.create') }}">Menabung</a>
 
-<script>
-    document.querySelectorAll('.delete-form').forEach(form => {
-        form.addEventListener('submit', function(event) {
-            if (!confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-                event.preventDefault();
-            }
-        });
-    });
-</script>
 
 </body>
 </html>

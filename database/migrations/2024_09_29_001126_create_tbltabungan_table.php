@@ -13,7 +13,6 @@ return new class extends Migration
             $table->decimal('jumlah_tabungan'); // Mengubah ke integer untuk jumlah tabungan
             $table->date('tanggal'); // Tanggal tabungan
             $table->timestamps(); // Kolom created_at dan updated_at
-
             // Menambahkan foreign key constraint jika diperlukan
         });
     }

@@ -18,12 +18,8 @@ class controller1 extends Controller
 {
     $dataTabungan = mytabungan::all();
     $totalTabungan = $dataTabungan->sum('jumlah_tabungan');
-    $deductionLogs = DeductionLog::all(); // Fetch all deduction logs
 
-    // Calculate total deduction
-    $totalDeduction = $deductionLogs->sum('jumlah_pengurangan');
-
-    return view('index', compact('dataTabungan', 'totalTabungan', 'deductionLogs', 'totalDeduction'));
+    return view('index', compact('dataTabungan', 'totalTabungan'));
 }
 
 
@@ -103,39 +99,4 @@ public function store(Request $request)
         mytabungan::where('id', $id)->delete();
         return redirect(route('tabungan.index'));
     }
-
-public function deductAll(Request $request)
-{
-    // Validate the input
-    $request->validate([
-        'jumlah_pengurangan' => 'required|numeric|min:1',
-    ]);
-
-    $jumlahPengurangan = $request->jumlah_pengurangan;
-
-    // Deduct from all entries and log the deduction
-    mytabungan::chunk(100, function ($tabungans) use ($jumlahPengurangan) {
-        foreach ($tabungans as $tabungan) {
-            $originalAmount = $tabungan->jumlah_tabungan;
-            $tabungan->jumlah_tabungan -= $jumlahPengurangan;
-
-            // Ensure it doesn't go below zero
-            if ($tabungan->jumlah_tabungan < 0) {
-                $tabungan->jumlah_tabungan = 0;
-            }
-
-            $tabungan->save();
-
-            // Log the deduction
-            DeductionLog::create([
-                'id' => $tabungan->id,
-                'jumlah_tabungan' => $originalAmount - $tabungan->jumlah_tabungan,
-            ]);
-        }
-    });
-
-    return redirect()->route('tabungan.index')->with('success', 'Jumlah tabungan berhasil dikurangi!');
-}
-
-
 }
