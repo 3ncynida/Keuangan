@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MyTabungan extends Model
+class mytabungan extends Model
 {
     use HasFactory;
 
@@ -25,4 +25,9 @@ class MyTabungan extends Model
         'jumlah_tabungan',
         'tanggal',
     ];
+
+    public function pengurangan()
+{
+    return $this->hasMany(PenguranganTabungan::class);
+}
 }
